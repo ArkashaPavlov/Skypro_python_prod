@@ -1,0 +1,5 @@
+Локатор кнопки Войти - #stickyHeader > div > div.h3d_9 > div.caj2_40 > div > div > svg > path:nth-child(2)
+Локатор кнопки Заказы - #stickyHeader > div > div.h3d_9 > div.d405-a.sf0_14 > a > svg > path
+Локатор ссылки OZON Job (в футере) - #layoutPage > div.b2 > div.dw1_9 > div > div > div:nth-child(7) > div > footer > div > div.df9_9 > a
+Локатор выбора валюты (верхний левый угол страницы) - #layoutPage > div.b2 > div.d7s_9 > div > div > button > div
+Локатор выпадашки Везде (в поисковой строке) - #stickyHeader > div > div.hd3_9 > div > div > form > div > div.aca1_32 > span.a1ca_32.tsBody400Small
