@@ -36,22 +36,22 @@ def get_data():
     stat_company = driver.find_element(By.ID,"company").get_attribute("class") 
     stat_zipC = driver.find_element(By.ID,"zip-code").get_attribute("class") 
  
-    data_list = [ 
-        {"first_name" : stat_first_name}, 
-        {"last_name" : stat_last_name}, 
-        {"address" : stat_address}, 
-        {"city" : stat_city}, 
-        {"country" : stat_country}, 
-        {"e_mail" : stat_e_mail}, 
-        {"phone" : stat_phone}, 
-        {"job" : stat_job}, 
-        {"company" : stat_company}, 
-        {"zipC" : stat_zipC}] 
- 
-    global data 
-    data = {k: v for d in data_list for k, v in d.items()} 
+    global data_list 
+    data_list = {
+        "first_name" : stat_first_name,
+        "last_name" : stat_last_name,
+        "address" : stat_address,
+        "city" : stat_city,
+        "country" : stat_country,
+        "e_mail" : stat_e_mail,
+        "phone" : stat_phone,
+        "job" : stat_job,
+        "company" : stat_company,
+        "zipC" : stat_zipC
+    }
+    #data = {k: v for d in data_list for k, v in d.items()} 
      
-    return data 
+    return data_list 
 
 def start_work(site): 
     goSite_insert(site) 
@@ -60,14 +60,14 @@ def start_work(site):
 
 start_work(site)
 
-@pytest.mark.parametrize('text',[(data["zipC"])]) 
+@pytest.mark.parametrize('text',[(data_list["zipC"])]) 
 def test_ZIP(text): 
     assert text == "alert py-2 alert-danger" 
 
-@pytest.mark.parametrize('text',[(data["first_name"]),(data["last_name"]), 
-    (data["address"]),(data["city"]), 
-    (data["country"]),(data["e_mail"]), 
-    (data["phone"]),(data["job"]),(data["company"])]) 
+@pytest.mark.parametrize('text',[(data_list["first_name"]),(data_list["last_name"]), 
+    (data_list["address"]),(data_list["city"]), 
+    (data_list["country"]),(data_list["e_mail"]), 
+    (data_list["phone"]),(data_list["job"]),(data_list["company"])]) 
 def test_rest(text): 
     assert text == "alert py-2 alert-success" 
 
