@@ -1,74 +1,21 @@
 from selenium import webdriver 
-from selenium.webdriver.common.by import By 
-from selenium import webdriver 
 import pytest 
-
+from Classes.task_1_classes import Autorization
 
 driver = webdriver.Chrome() 
-site = "https://bonigarcia.dev/selenium-webdriver-java/data-types.html" 
 
+auth = Autorization(driver)
+auth.input_params()
 
-def goSite_insert(site): 
-
-    driver.get(site) 
-    driver.find_element(By.NAME,"first-name").send_keys("Иван") 
-    driver.find_element(By.NAME,"last-name").send_keys("Петров") 
-    driver.find_element(By.NAME,"address").send_keys("Ленина, 55-3") 
-    driver.find_element(By.NAME,"city").send_keys("Москва") 
-    driver.find_element(By.NAME,"country").send_keys("Россия") 
-    driver.find_element(By.NAME,"e-mail").send_keys("test@skypro.com") 
-    driver.find_element(By.NAME,"phone").send_keys("+7985899998787") 
-    driver.find_element(By.NAME,"job-position").send_keys("QA") 
-    driver.find_element(By.NAME,"company").send_keys("SkyPro") 
-    driver.find_element(By.NAME,"zip-code") 
-    driver.find_element(By.TAG_NAME,"button").click() 
-
-def get_data(): 
- 
-    stat_first_name = driver.find_element(By.ID,"first-name").get_attribute("class") 
-    stat_last_name = driver.find_element(By.ID,"last-name").get_attribute("class") 
-    stat_address = driver.find_element(By.ID,"address").get_attribute("class") 
-    stat_city = driver.find_element(By.ID,"city").get_attribute("class") 
-    stat_country = driver.find_element(By.ID,"country").get_attribute("class") 
-    stat_e_mail = driver.find_element(By.ID,"e-mail").get_attribute("class") 
-    stat_phone = driver.find_element(By.ID,"phone").get_attribute("class") 
-    stat_job = driver.find_element(By.ID,"job-position").get_attribute("class") 
-    stat_company = driver.find_element(By.ID,"company").get_attribute("class") 
-    stat_zipC = driver.find_element(By.ID,"zip-code").get_attribute("class") 
- 
-    global data_list 
-    data_list = {
-        "first_name" : stat_first_name,
-        "last_name" : stat_last_name,
-        "address" : stat_address,
-        "city" : stat_city,
-        "country" : stat_country,
-        "e_mail" : stat_e_mail,
-        "phone" : stat_phone,
-        "job" : stat_job,
-        "company" : stat_company,
-        "zipC" : stat_zipC
-    }
-    #data = {k: v for d in data_list for k, v in d.items()} 
-     
-    return data_list 
-
-def start_work(site): 
-    goSite_insert(site) 
-    get_data() 
-
-
-start_work(site)
-
-@pytest.mark.parametrize('text',[(data_list["zipC"])]) 
-def test_ZIP(text): 
+@pytest.mark.parametrize('text',[(auth.check_status()["zipC"])]) 
+def test_ZIP(text): #Проверяем что незаполненное поле zip-code - красное и с ошибкой
     assert text == "alert py-2 alert-danger" 
 
-@pytest.mark.parametrize('text',[(data_list["first_name"]),(data_list["last_name"]), 
-    (data_list["address"]),(data_list["city"]), 
-    (data_list["country"]),(data_list["e_mail"]), 
-    (data_list["phone"]),(data_list["job"]),(data_list["company"])]) 
-def test_rest(text): 
+@pytest.mark.parametrize('text',[(auth.check_status()["first_name"]),(auth.check_status()["last_name"]),(auth.check_status()["address"]), #Задаются параметры для тестирования
+                                 (auth.check_status()["city"]),(auth.check_status()["country"]),(auth.check_status()["e_mail"]),
+                                 (auth.check_status()["phone"]),(auth.check_status()["job"]),(auth.check_status()["company"])]
+                        )
+def test_rest(text): #Проверяем что остальные поля зелёные и без ошибок
     assert text == "alert py-2 alert-success" 
 
 driver.quit()

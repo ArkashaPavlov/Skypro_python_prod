@@ -15,16 +15,18 @@ driver = webdriver.Chrome()
 
 login ="standard_user"
 password = "secret_sauce"
+Exp_summ = "$58.29"
 
 f_name = generate_names(7)
 l_name = generate_names(5)
 phone = generate_nums(10)
 
-first_page = Shop(driver)
-first_page.autorization(login,password)
-first_page.select_items()
-first_page.chekout_form(f_name,l_name,phone) 
+shop = Shop(driver)
+shop.autorization(login,password)
+shop.select_items()
+shop.chekout_form(f_name,l_name,phone) 
 
-@pytest.mark.parametrize("sum",[((first_page.get_summ()))])
-def test_prise(sum):
-    assert sum == "$58.29"
+
+@pytest.mark.parametrize("actual_sum",[((shop.get_summ()))])
+def test_prise(actual_sum):
+    assert actual_sum == Exp_summ
