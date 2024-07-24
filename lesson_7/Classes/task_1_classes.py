@@ -1,22 +1,24 @@
 from selenium.webdriver.common.by import By
+from faker import Faker
 
+fake = Faker()
 
 class Autorization:
 
-    def __init__(self,driver):
+    def init(self,driver):
         self._driver = driver
 
     def input_params(self,site="https://bonigarcia.dev/selenium-webdriver-java/data-types.html"):
         self._driver.get(site)
-        self._driver.find_element(By.NAME,"first-name").send_keys("Иван")
-        self._driver.find_element(By.NAME,"last-name").send_keys("Петров")
-        self._driver.find_element(By.NAME,"address").send_keys("Ленина, 55-3") 
-        self._driver.find_element(By.NAME,"city").send_keys("Москва")
-        self._driver.find_element(By.NAME,"country").send_keys("Россия") 
-        self._driver.find_element(By.NAME,"e-mail").send_keys("test@skypro.com") 
-        self._driver.find_element(By.NAME,"phone").send_keys("+7985899998787") 
-        self._driver.find_element(By.NAME,"job-position").send_keys("QA") 
-        self._driver.find_element(By.NAME,"company").send_keys("SkyPro") 
+        self._driver.find_element(By.NAME,"first-name").send_keys(fake.name_male())
+        self._driver.find_element(By.NAME,"last-name").send_keys(fake.last_name())
+        self._driver.find_element(By.NAME,"address").send_keys(fake.address()) 
+        self._driver.find_element(By.NAME,"city").send_keys(fake.city())
+        self._driver.find_element(By.NAME,"country").send_keys(fake.country()) 
+        self._driver.find_element(By.NAME,"e-mail").send_keys(fake.email()) 
+        self._driver.find_element(By.NAME,"phone").send_keys(fake.phone_number()) 
+        self._driver.find_element(By.NAME,"job-position").send_keys(fake.job()) 
+        self._driver.find_element(By.NAME,"company").send_keys(fake.company()) 
         self._driver.find_element(By.TAG_NAME,"button").click()
 
     def check_status(self):

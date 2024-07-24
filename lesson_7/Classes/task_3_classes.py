@@ -1,51 +1,34 @@
 from selenium.webdriver.common.by import By
-from faker import Faker
-from time import sleep
 
-fake = Faker()
+class Shop:
 
-class Autorization:
-
-    def init(self,driver):
+    def __init__(self,driver):
         self._driver = driver
+    
+    def autorization(self,login,password):
+        self._driver.get("https://www.saucedemo.com/")
+        self._driver.find_element(By.CSS_SELECTOR,"#user-name").send_keys(login)
+        self._driver.find_element(By.CSS_SELECTOR,"#password").send_keys(password)
+        self._driver.find_element(By.CSS_SELECTOR,"#login-button").click()
 
-    def input_params(self,site="https://bonigarcia.dev/selenium-webdriver-java/data-types.html"):
-        self._driver.get(site)
-        self._driver.find_element(By.NAME,"first-name").send_keys(fake.name_male())
-        self._driver.find_element(By.NAME,"last-name").send_keys(fake.last_name())
-        self._driver.find_element(By.NAME,"address").send_keys(fake.address()) 
-        self._driver.find_element(By.NAME,"city").send_keys(fake.city())
-        self._driver.find_element(By.NAME,"country").send_keys(fake.country()) 
-        self._driver.find_element(By.NAME,"e-mail").send_keys(fake.email()) 
-        self._driver.find_element(By.NAME,"phone").send_keys(fake.phone_number()) 
-        self._driver.find_element(By.NAME,"job-position").send_keys(fake.job()) 
-        self._driver.find_element(By.NAME,"company").send_keys(fake.company()) 
-        self._driver.find_element(By.TAG_NAME,"button").click()
-        sleep(5)
 
-    def check_status(self):
-        stat_first_name = self._driver.find_element(By.ID,"first-name").get_attribute("class") 
-        stat_last_name = self._driver.find_element(By.ID,"last-name").get_attribute("class") 
-        stat_address = self._driver.find_element(By.ID,"address").get_attribute("class") 
-        stat_city = self._driver.find_element(By.ID,"city").get_attribute("class") 
-        stat_country = self._driver.find_element(By.ID,"country").get_attribute("class") 
-        stat_e_mail = self._driver.find_element(By.ID,"e-mail").get_attribute("class") 
-        stat_phone = self._driver.find_element(By.ID,"phone").get_attribute("class") 
-        stat_job = self._driver.find_element(By.ID,"job-position").get_attribute("class") 
-        stat_company = self._driver.find_element(By.ID,"company").get_attribute("class") 
-        stat_zipC = self._driver.find_element(By.ID,"zip-code").get_attribute("class") 
+    def select_items(self):
+        self._driver.find_element(By.CSS_SELECTOR,"#add-to-cart-sauce-labs-backpack").click()
+        self._driver.find_element(By.CSS_SELECTOR,"#add-to-cart-sauce-labs-bolt-t-shirt").click()
+        self._driver.find_element(By.CSS_SELECTOR,"#add-to-cart-sauce-labs-onesie").click()
+        self._driver.find_element(By.CSS_SELECTOR,"#shopping_cart_container > a").click()
 
-        data_list = {
-            "first_name" : stat_first_name,
-            "last_name" : stat_last_name,
-            "address" : stat_address,
-            "city" : stat_city,
-            "country" : stat_country,
-            "e_mail" : stat_e_mail,
-            "phone" : stat_phone,
-            "job" : stat_job,
-            "company" : stat_company,
-            "zipC" : stat_zipC
-        }
-        
-        return data_list
+    def chekout_form(self,f_nme,l_name,phone):
+        self._driver.find_element(By.CSS_SELECTOR,"#checkout").click()
+        self._driver.find_element(By.CSS_SELECTOR,"#first-name").send_keys(f_nme)
+        self._driver.find_element(By.CSS_SELECTOR,"#last-name").send_keys(l_name)
+        self._driver.find_element(By.CSS_SELECTOR,"#postal-code").send_keys(phone)
+        self._driver.find_element(By.CSS_SELECTOR,"#continue").click()
+
+    def get_summ(self):
+        total_prise = self._driver.find_element(By.XPATH,"//div[@class='summary_total_label']").text
+        self._driver.quit()
+        index = total_prise.find('$')
+        final_price = total_prise[index:]
+
+        return final_price

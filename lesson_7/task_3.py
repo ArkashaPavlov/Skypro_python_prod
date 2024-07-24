@@ -1,22 +1,32 @@
-from selenium import webdriver 
-import pytest 
+from selenium import webdriver
+import random
+import string
+import pytest
 
-from Classes.task_1_classes import Autorization
+from Classes.task_3_classes import Shop
 
-driver = webdriver.Chrome() 
+def generate_names(char_num):
+    return ''.join(random.choice(string.ascii_letters) for _ in range(char_num))
+    
+def generate_nums(char_num):
+    return ''.join(random.choice(string.digits) for _ in range(char_num))
 
-auth = Autorization(driver)
-auth.input_params()
+driver = webdriver.Chrome()
 
-@pytest.mark.parametrize('text',[(auth.check_status()["zipC"])]) 
-def test_ZIP(text): #Проверяем что незаполненное поле zip-code - красное и с ошибкой
-    assert text == "alert py-2 alert-danger" 
+login ="standard_user"
+password = "secret_sauce"
+Exp_summ = "$58.29"
 
-@pytest.mark.parametrize('text',[(auth.check_status()["first_name"]),(auth.check_status()["last_name"]),(auth.check_status()["address"]), #Задаются параметры для тестирования
-                                 (auth.check_status()["city"]),(auth.check_status()["country"]),(auth.check_status()["e_mail"]),
-                                 (auth.check_status()["phone"]),(auth.check_status()["job"]),(auth.check_status()["company"])]
-                        )
-def test_rest(text): #Проверяем что остальные поля зелёные и без ошибок
-    assert text == "alert py-2 alert-success" 
+f_name = generate_names(7)
+l_name = generate_names(5)
+phone = generate_nums(10)
 
-driver.quit()
+shop = Shop(driver)
+shop.autorization(login,password)
+shop.select_items()
+shop.chekout_form(f_name,l_name,phone) 
+
+
+@pytest.mark.parametrize("actual_sum",[((shop.get_summ()))])
+def test_prise(actual_sum):
+    assert actual_sum == Exp_summ
