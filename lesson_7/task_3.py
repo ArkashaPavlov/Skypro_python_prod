@@ -1,7 +1,6 @@
 from selenium import webdriver
 import random
 import string
-import pytest
 
 from Classes.task_3_classes import Shop
 
@@ -13,20 +12,18 @@ def generate_nums(char_num):
 
 driver = webdriver.Chrome()
 
-login ="standard_user"
-password = "secret_sauce"
-Exp_summ = "$58.29"
+shop = Shop(driver)                     #Передаём драйвер в классы
 
-f_name = generate_names(7)
-l_name = generate_names(5)
-phone = generate_nums(10)
+def test_prise():
+    login ="standard_user"
+    password = "secret_sauce"
+    f_name = generate_names(7)
+    l_name = generate_names(5)
+    phone = generate_nums(10)
+    exp_summ = "$58.29"
+    shop.autorization(login,password)       #авторизация
+    shop.select_items()                     #Выброр товаров 
+    shop.chekout_form(f_name,l_name,phone)  #Форма оформления заказа
 
-shop = Shop(driver)
-shop.autorization(login,password)
-shop.select_items()
-shop.chekout_form(f_name,l_name,phone) 
-
-
-@pytest.mark.parametrize("actual_sum",[((shop.get_summ()))])
-def test_prise(actual_sum):
-    assert actual_sum == Exp_summ
+    
+    assert shop.get_summ() == exp_summ 
