@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from new_methoods import Employees
+from methoods import Employees
 from selenium.webdriver.common.keys import Keys
 
 import requests
