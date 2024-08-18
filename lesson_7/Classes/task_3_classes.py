@@ -11,7 +11,6 @@ class Shop:
         self._driver.find_element(By.CSS_SELECTOR,"#password").send_keys(password)
         self._driver.find_element(By.CSS_SELECTOR,"#login-button").click()
 
-
     def select_items(self):
         self._driver.find_element(By.CSS_SELECTOR,"#add-to-cart-sauce-labs-backpack").click()
         self._driver.find_element(By.CSS_SELECTOR,"#add-to-cart-sauce-labs-bolt-t-shirt").click()
